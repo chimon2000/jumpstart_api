@@ -1,0 +1,25 @@
+name: Run Test Suite
+on:
+  pull_request:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  Run-Test-Suite:
+    runs-on: ubuntu-latest
+    env:
+      GROWTHBOOK_API_HOST: 'GROWTHBOOK_API_HOST'
+      GROWTHBOOK_CLIENT_KEY: 'GROWTHBOOK_CLIENT_KEY'
+    steps:
+    - name: Authenticate with private NPM package
+      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '18.14.2'
+    - run: npm install
+    - run: npm run build:noemit
+    - run: npm run lint
+    - run: npm run test:bail
+    - run: npm run test:e2e

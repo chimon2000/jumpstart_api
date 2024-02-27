@@ -1,0 +1,8 @@
+name: jumpstart-nitric
+services:
+  - match: src/nestjs/main.ts
+    start: pnpm start
+  - match: src/services/*.ts
+    runtime: ''
+    type: ''
+    start: pnpm start:services $SERVICE_PATH
